@@ -2,7 +2,6 @@ package com.gus.strategyreports.controllers;
 
 import com.gus.strategyreports.dtos.UserRequest;
 import com.gus.strategyreports.dtos.UserResponse;
-import com.gus.strategyreports.services.CsvExportService;
 import com.gus.strategyreports.services.UserService;
 import com.gus.strategyreports.utils.CsvExportUtils;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +17,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final CsvExportService csvExportService;
     private final UserService userService;
 
     @PostMapping
@@ -29,6 +27,6 @@ public class UserController {
     @GetMapping("csv")
     public void getAllUsersInCSV(HttpServletResponse servletResponse) throws IOException {
         CsvExportUtils.buildHeaderResponse(servletResponse, "all_users_report");
-        csvExportService.writeUsersToCsv(servletResponse.getWriter());
+        userService.downloadReport(servletResponse.getWriter());
     }
 }

@@ -1,6 +1,6 @@
 package com.gus.strategyreports.controllers;
 
-import com.gus.strategyreports.services.CsvExportService;
+import com.gus.strategyreports.services.GroupService;
 import com.gus.strategyreports.utils.CsvExportUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,11 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class GroupController {
 
-    private final CsvExportService csvExportService;
+    private final GroupService groupService;
 
     @GetMapping("csv")
     public void getAllGroupsInCSV(HttpServletResponse servletResponse) throws IOException {
         CsvExportUtils.buildHeaderResponse(servletResponse, "all_groups_report");
-        csvExportService.writeGroupsToCsv(servletResponse.getWriter());
+        groupService.downloadReport(servletResponse.getWriter());
     }
 }
