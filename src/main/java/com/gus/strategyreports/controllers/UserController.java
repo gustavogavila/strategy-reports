@@ -4,16 +4,14 @@ import com.gus.strategyreports.dtos.UserRequest;
 import com.gus.strategyreports.dtos.UserResponse;
 import com.gus.strategyreports.services.CsvExportService;
 import com.gus.strategyreports.services.UserService;
+import com.gus.strategyreports.utils.CsvExportUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("users")
@@ -30,14 +28,7 @@ public class UserController {
 
     @GetMapping("csv")
     public void getAllUsersInCSV(HttpServletResponse servletResponse) throws IOException {
-        buildHeaderResponse(servletResponse);
+        CsvExportUtils.buildHeaderResponse(servletResponse, "all_users_report");
         csvExportService.writeUsersToCsv(servletResponse.getWriter());
-    }
-
-    private static void buildHeaderResponse(HttpServletResponse servletResponse) {
-        servletResponse.setContentType("text/csv");
-        String timestamp = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        String filename = String.format("%s__all_users_report.csv", timestamp);
-        servletResponse.addHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", filename));
     }
 }
